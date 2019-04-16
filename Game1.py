@@ -7,6 +7,7 @@ import random
 
 
 class Game():
+    """Класс - реализация игровой механики"""
     lst = [[0] * 16 for i in range(11)]
     position_x = 0
     position_y = 0
@@ -15,11 +16,19 @@ class Game():
     Run = True
     list_of_classes = [Alone, Quatro, Tetra, Line]
     figure = random.choice(list_of_classes)()
+    score = 0
 
-    def __init__(self, Score=0):
-        self.score = Score
+    def __init__(self):
+        """Метод - инициализация класса игра"""
+        pass
 
     def check_the_lines(self, width, length):
+        """Метод
+        Входные данные - принимает размеры матрицы игрового поля width и length(элемент равен 1 если клетка занята,
+        0 если нет)(числа)
+        Проверяет, есть ли в матрице строки, заполненные 1
+        Возвращает номер строки (check - число) заполненной 1(если таких строк
+        несколько, возвращает номер той, которая выше), если такой строки нет - возвращает -1"""
         check = -1
         for i in range(0, length - 2):
             flag = 1
@@ -31,10 +40,16 @@ class Game():
         return check
 
     def choose_the_figure(self):
+        """Метод
+        Входные данные - нет
+        Выбирает рандомную фигуру их списка классов заданных фигур"""
         list_of_classes = [Alone, Quatro, Tetra, Line]
         self.figure = random.choice(list_of_classes)()
 
     def set_the_place_of_figure(self):
+        """Метод
+        Входные данные - нет
+        Рандомно задает координату по х в зависимости от типа заданной фигуры"""
         self.position_x = 0
         if self.figure.type() == "alone":
             self.position_x = random.choice([150, 170, 190, 210, 230, 250, 270, 290, 310, 330])
@@ -46,6 +61,11 @@ class Game():
             self.position_x = random.choice([150, 170, 190, 210, 230, 250, 270])
 
     def check_the_condition(self):
+        """Метод
+        Входные данные - нет
+        В зависимости от типа фигуры изменяет переменную condition(число) - проверяет, пуста ли строка под фигурой
+        В результате в переменной condition будет 0 - есл строка свободна, либо число - отичное от 0 -
+        значит строка под фигурой не свободна для ее перемещения вниз"""
         self.condition = 0
         if self.figure.type() == "line":
             self.condition = self.lst[(self.position_x - 150) // 20][((self.position_y + 20) - 100) // 20] + \
@@ -63,9 +83,16 @@ class Game():
                              self.lst[(self.position_x - 150 + 40) // 20][((self.position_y + 40) - 100) // 20]
 
     def fill_the_screen(self, win):
+        """Метод
+        Входные данные - окно, в котором будем работать
+        Заливает окно фоновым цветом"""
         win.fill((0, 0, 0))
 
     def print_the_screen_and_figure(self, win):
+        """Метод
+        Входные данные - окно, в котором будем работать
+        Метод отрисовывает в окне весь графический интерфейс - клеточки, окно со счетом игры, игровое поле,
+        фигуру в данный момент времени"""
         font = pygame.font.Font(None, 25)
         text = font.render("TOTAL SCORE:", True, (255, 255, 255))
         win.blit(text, [190, 435])
@@ -93,9 +120,13 @@ class Game():
         for i in range(11):
             for j in range(16):
                 if self.lst[i][j] == 1:
-                    pygame.draw.rect(win, (0, 0, 255), (150 + (i * 20) + 1, (100 + (j * 20)) + 1, self.side_of_piece - 1, self.side_of_piece - 1))
+                    pygame.draw.rect(win, (0, 0, 255), (150 + (i * 20) + 1, (100 + (j * 20)) + 1,
+                                                        self.side_of_piece - 1, self.side_of_piece - 1))
 
     def keyboard_event_handling(self):
+        """Метод
+        Входные данные - нет
+        Обработка действий с клавиатурой"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.Run = False
@@ -115,9 +146,16 @@ class Game():
                     self.position_x += 20
 
     def move(self):
+        """Метод
+        Входные данные - нет
+        Изменяет координату фигуры по y - сдвигает всю фигуру на клетку вниз"""
         self.position_y += 20
 
     def stop_the_figure(self):
+        """Метод
+        Входные данные - нет
+        Метод - обработка остановки фигуры, изменяет матрицу игрового поля в соответствии с данным конечным
+        положением фигуры(заполняет элементы текущего положения единицами"""
         self.position_y -= 20
 
         if self.figure.type() == "alone":
@@ -139,6 +177,10 @@ class Game():
             self.lst[(self.position_x - 150 + 40) // 20][(self.position_y - 100) // 20] = 1
 
     def delete_full_lines(self):
+        """Метод
+        Входные данные - нет
+        Метод удаляет все строки матрицы игрового поля, заполненные единицами, если таковые есть
+        в соответствии с этим меняет счет игры"""
         if self.check_the_lines(11, 16) != -1:
             i = self.check_the_lines(11, 16)
             while i >= 1:
@@ -151,6 +193,9 @@ class Game():
             self.score += 10
 
     def print_the_figures(self, win):
+        """Метод
+        Входные данные - окно, в котором будем работать
+        Метод отрисовывает заполненное на данный момент игровое поле"""
         for i in range(11):
             for j in range(16):
                 if self.lst[i][j] == 1:
@@ -158,7 +203,9 @@ class Game():
         self.position_y = 80
 
     def run(self):
-
+        """Метод, запускающий игру
+        Входные данные - нет
+        использует все вышеперечисленные методы, описывает игровую механику"""
         pygame.init()
         window = pygame.display.set_mode((500, 500))
         pygame.display.set_caption("Cubes Game")
