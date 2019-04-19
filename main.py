@@ -1,6 +1,6 @@
 from Game1 import Game
 
 mygame = Game()
-"""Создаем обьект класса игра"""
+"""Create an object of class game"""
 mygame.run()
-"""Вызываем метод, запускающий игру"""
+"""Calling the method that runs the game"""
