@@ -1,9 +1,9 @@
 class Piece():
-    """Родительский класс, от которого будем наследовать классы различных типов фигур"""
+    """Parent class which we will use to inherit classes"""
     def __init__(self, row, column, types, list, Board, Colors):
-        """Метод инициализации родительского класса, принимает количество строк(число), колонок фигуры(число),
-        матрицу, заполненную 0 и 1(двумерный список),
-        максимальное значение координаты y для того чтобы не выйти за границы поля(число) и цвет фигуры(строка)"""
+        """Method of initialization of parent class, takes the amount of lines(numeric), columns of figure(numeric),
+        matrix, which is filled with 0 and 1(two-dimensional list),
+        maximum value of coordinate yin order not to go beyond the field(numeric) and color of figure(line)"""
         self.rows = row
         self.columns = column
         self.types = types
@@ -12,14 +12,14 @@ class Piece():
         self.colors = Colors
 
     def print(self, x_coord, y_coord, side, window):
-        """Метод отрисовки фигуры : принимает координаты фигуры по x и y(число), длину одного квадратика(число),
-         окно, в котором будем рисовать"""
+        """Figure drawing method : takes x and y coordinates of figure(numeric),
+        length of the side of one square(numeric), window in which we will draw"""
         pass
 
     def type(self):
-        """Метод, возвращающий тип фигуры(строка)"""
-        pass
+        """Method which returns the type of the figure(line)"""
+        return self.types
 
     def boardd(self):
-        """Метод, возвращающий максимальное значение координаты y для того чтобы не выйти за границы поля(число)"""
-        pass
+        """Method which returns maximum value of y coordinate in order not to go beyond the field (numeric)"""
+        return self.board
